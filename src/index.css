@@ -1,25 +1,42 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&family=Tiro+Devanagari+Sanskrit&display=swap');
 
 @import "tailwindcss";
 
 @theme {
-  --color-linen: #FAF6EE;
-  --color-parchment: #F2EBDC;
-  --color-sand: #F5EFE0;
-  --color-botanical: #1C352D;
-  --color-botanical-light: #2C4C3B;
-  --color-sage: #6E8569;
-  --color-terracotta: #B85B35;
-  --color-gold: #D4AF37;
-  --color-charcoal: #2B2927;
+  /* New Tokens */
+  --color-dawn: #FFF6EC;
+  --color-sandal: #F1E3CF;
+  --color-sage: #7A9272;
+  --color-forest: #1F3A2E;
+  --color-saffron: #E08A2E;
+  --color-lotus: #E9A6A6;
+  --color-brass: #C9A45C;
+  --color-ink: #2A2622;
+
+  /* Legacy Aliases */
+  --color-linen: var(--color-dawn);
+  --color-parchment: var(--color-sandal);
+  --color-sand: var(--color-sandal);
+  --color-botanical: var(--color-forest);
+  --color-botanical-light: var(--color-forest);
+  --color-terracotta: var(--color-saffron);
+  --color-gold: var(--color-brass);
+  --color-charcoal: var(--color-ink);
 
   --font-serif: 'Cormorant Garamond', serif;
   --font-sans: 'Inter', sans-serif;
+  --font-devanagari: 'Tiro Devanagari Sanskrit', serif;
+
+  --radius-organic: 32px 8px 32px 8px;
+  --radius-organic-alt: 8px 32px 8px 32px;
+  --radius-organic-soft: 24px 6px 24px 6px;
+
+  --shadow-organic: 0 8px 30px rgba(0, 0, 0, 0.03);
 }
 
 body {
-  background-color: var(--color-linen);
-  color: var(--color-charcoal);
+  background-color: var(--color-dawn);
+  color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   font-weight: 300;
@@ -27,7 +44,42 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-serif);
-  color: var(--color-botanical);
+  color: var(--color-forest);
+}
+
+/* Devanagari text styling */
+.font-devanagari {
+  font-family: var(--font-devanagari);
+}
+
+/* Glass System */
+.glass {
+  background: rgba(255, 250, 242, 0.55);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 10px 40px rgba(31, 58, 46, 0.12), inset 0 1px 0 rgba(255,255,255,0.6);
+  border-radius: 28px;
+  position: relative; /* for ::after */
+}
+.glass-dark { 
+  background: rgba(31, 58, 46, 0.45); 
+  border-color: rgba(201,164,92,0.35); 
+  color: #FFF6EC; 
+}
+/* subtle grain so glass doesn't look flat/plastic */
+.glass::after { 
+  content:""; 
+  position:absolute; 
+  inset:0; 
+  border-radius:inherit; 
+  pointer-events:none;
+  background-image:url('/textures/noise.png'); 
+  opacity:.05; 
+  mix-blend-mode:overlay; 
+}
+@supports not (backdrop-filter: blur(1px)) { 
+  .glass { background: rgba(255,250,242,0.92); } 
 }
 
 /* Utility: hide scrollbar */

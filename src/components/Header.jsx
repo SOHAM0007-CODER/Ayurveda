@@ -1,64 +1,125 @@
-import React, { useState } from 'react';
-import { Leaf, X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Leaf, Menu, X, ChevronDown } from 'lucide-react';
 import LeafButton from './LeafButton';
+import { motion, AnimatePresence } from 'framer-motion';
 
-export default function Header({ activeTab, setActiveTab }) {
+export default function Header() {
+  const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const tabs = [
-    { id: 'home', label: 'Home' },
-    { id: 'simulator', label: 'Panchakarma Simulator' },
-    { id: 'dosha-test', label: 'Dosha Test' },
-    { id: 'gallery', label: 'Patient Stories' }
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const location = useLocation();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+      
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      setScrollProgress((winScroll / height) * 100);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location]);
+
+  const navLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'About Us', path: '/about' },
+    { name: 'Treatments', path: '/treatments' },
+    { name: 'Panchakarma', path: '/panchakarma' },
+    { name: 'Wellness', path: '/wellness' },
+    { name: 'Blog', path: '/blog' },
+    { name: 'Gallery', path: '/gallery' },
+    { name: 'Contact Us', path: '/contact' },
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-linen/95 backdrop-blur-md border-b border-botanical/10">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        <button onClick={() => setActiveTab('home')} className="flex items-center gap-2">
-          <Leaf className="w-7 h-7 text-terracotta" />
-          <div className="text-left">
-            <span className="text-2xl font-serif text-botanical tracking-wide font-semibold block leading-none">AYULIFE</span>
-            <span className="text-[10px] text-sage uppercase tracking-[0.2em]">Authentic Sanctuary</span>
+    <>
+      <div 
+        className="fixed top-0 left-0 h-1 bg-saffron z-50 transition-all duration-300" 
+        style={{ width: `${scrollProgress}%` }}
+      />
+      
+      <header 
+        className={`fixed w-full z-40 transition-all duration-500 flex justify-center ${
+          scrolled ? 'top-4 px-4' : 'top-0 px-0'
+        }`}
+      >
+        <div 
+          className={`w-full max-w-7xl mx-auto flex items-center justify-between transition-all duration-500 ${
+            scrolled ? 'glass px-6 py-3' : 'px-8 py-5 bg-transparent'
+          }`}
+        >
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-dawn rounded-full flex items-center justify-center p-2 shadow-sm overflow-hidden">
+              <img src="/brand/swasthyam-logo.png" alt="Swasthyam" className="w-full h-full object-contain" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xl md:text-2xl font-serif tracking-wide font-semibold block leading-none text-forest">SWASTHYAM</span>
+              <span className="text-[10px] md:text-xs tracking-[0.2em] uppercase text-saffron mt-1 font-medium">Ayurved</span>
+            </div>
+          </Link>
+
+          {/* Desktop Nav */}
+          <nav className="hidden lg:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                to={link.path}
+                className={`text-sm tracking-wide hover:text-saffron transition-colors ${
+                  location.pathname === link.path ? 'text-saffron font-medium' : 'text-forest'
+                }`}
+              >
+                {link.name}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="hidden lg:flex items-center gap-4">
+            <LeafButton to="/contact" variant="primary" className="py-2.5 px-6 text-xs">
+              Book Appointment
+            </LeafButton>
           </div>
-        </button>
-        
-        <nav className="hidden lg:flex items-center gap-8">
-          {tabs.map(tab => (
-            <button 
-              key={tab.id} 
-              onClick={() => setActiveTab(tab.id)}
-              className={`text-sm uppercase tracking-widest transition-colors ${activeTab === tab.id ? 'text-terracotta font-medium' : 'text-charcoal/70 hover:text-botanical'}`}
-            >
-              {tab.label}
-            </button>
-          ))}
-          <LeafButton onClick={() => setActiveTab('booking')} variant="primary" className="ml-4 py-2.5 px-6 text-xs">
-            Book Consultation
-          </LeafButton>
-        </nav>
 
-        {/* Mobile menu toggle */}
-        <button className="lg:hidden text-botanical" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-          {mobileMenuOpen ? <X className="w-6 h-6" /> : <span className="text-2xl font-sans">☰</span>}
-        </button>
-      </div>
-
-      {mobileMenuOpen && (
-        <div className="lg:hidden bg-linen border-t border-botanical/10 px-6 py-4 space-y-3">
-          {tabs.map(tab => (
-            <button 
-              key={tab.id} 
-              onClick={() => { setActiveTab(tab.id); setMobileMenuOpen(false); }} 
-              className={`block w-full text-left text-sm tracking-wider py-2 uppercase ${activeTab === tab.id ? 'text-terracotta font-medium' : 'text-charcoal/80'}`}
-            >
-              {tab.label}
-            </button>
-          ))}
-          <LeafButton onClick={() => { setActiveTab('booking'); setMobileMenuOpen(false); }} variant="primary" className="w-full mt-2 justify-center">
-            Book Consultation
-          </LeafButton>
+          {/* Mobile Menu Toggle */}
+          <button 
+            className="lg:hidden p-2 text-forest"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
-      )}
-    </header>
+
+        {/* Mobile Nav */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="absolute top-full left-4 right-4 mt-2 glass-dark p-6 rounded-2xl flex flex-col gap-4 lg:hidden"
+            >
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  className="text-dawn text-lg font-medium border-b border-dawn/10 pb-2"
+                >
+                  {link.name}
+                </Link>
+              ))}
+              <LeafButton to="/contact" variant="primary" className="mt-4 justify-center">
+                Book Appointment
+              </LeafButton>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
+    </>
   );
 }

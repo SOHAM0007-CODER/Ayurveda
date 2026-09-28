@@ -29,7 +29,7 @@ const therapies = [
     dosha: 'Vata',
     targetOrgans: 'Colon, Bones, Joints',
     description: 'Considered the mother of all Panchakarma treatments. Herbal decoctions and oils are administered to deeply cleanse and nourish the colon, the seat of Vata. 🌪️',
-    benefits: ['Cures chronic constipation and IBS', 'Relieves severe lower back pain and sciatica', 'Strengthens bones and joints'],
+    benefits: ['balances chronic constipation and IBS', 'Relieves severe lower back pain and sciatica', 'Strengthens bones and joints'],
     image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80'
   },
   {

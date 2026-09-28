@@ -1,24 +1,69 @@
-import React from 'react';
-import { Play, X } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function VideoModal({ title, onClose }) {
+  useEffect(() => {
+    if (title) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [title]);
+
   if (!title) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="absolute inset-0 bg-charcoal/85 backdrop-blur-sm"></div>
-      <div className="relative bg-linen p-2 rounded-3xl shadow-2xl w-full max-w-4xl z-10 border border-gold/20" onClick={e => e.stopPropagation()}>
-        <button onClick={onClose} className="absolute -top-12 right-0 text-sand hover:text-terracotta transition-colors">
-          <X className="w-8 h-8" />
-        </button>
-        <div className="bg-parchment w-full aspect-video rounded-2xl flex items-center justify-center border border-gold/10">
-          <div className="text-center p-8">
-            <Play className="w-16 h-16 text-terracotta mx-auto mb-4 opacity-70" />
-            <p className="font-serif text-2xl text-botanical">{title}</p>
-            <p className="text-sage mt-2 text-sm">Video player loads here in production</p>
+    <AnimatePresence>
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="absolute inset-0 bg-ink/80 backdrop-blur-md"
+        ></motion.div>
+        
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: 20 }}
+          className="relative glass-dark p-2 rounded-3xl shadow-2xl w-full max-w-5xl z-10" 
+          onClick={e => e.stopPropagation()}
+        >
+          <button 
+            onClick={onClose} 
+            className="absolute -top-12 right-0 text-dawn/60 hover:text-dawn transition-colors bg-ink/50 p-2 rounded-full"
+          >
+            <X className="w-6 h-6" />
+          </button>
+          
+          <div className="bg-ink w-full aspect-video rounded-2xl overflow-hidden flex items-center justify-center">
+            {title === "khalva-loop" ? (
+              <video 
+                src="/videos/khalva-loop.mp4" 
+                controls 
+                autoPlay 
+                className="w-full h-full object-cover"
+              />
+            ) : title === "herbs-alive" ? (
+              <video 
+                src="/videos/herbs-alive.mp4" 
+                controls 
+                autoPlay 
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="text-center p-8 text-dawn">
+                <p className="font-serif text-2xl mb-2">{title}</p>
+                <p className="text-dawn/60 text-sm">Video content will be placed here.</p>
+              </div>
+            )}
           </div>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </AnimatePresence>
   );
 }

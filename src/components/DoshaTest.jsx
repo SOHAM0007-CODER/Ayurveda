@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import LeafButton from './LeafButton';
+import { Reveal, SplitHeading } from '../motion/MotionKit';
 
 const questions = [
   {
@@ -61,88 +62,106 @@ export default function DoshaTest() {
     const counts = { Vata: 0, Pitta: 0, Kapha: 0 };
     Object.values(answers).forEach(dosha => counts[dosha]++);
     
-    // Find the highest count
+    // Find the highest count(s)
     let max = 0;
-    let primaryDosha = '';
+    let primaryDoshas = [];
     for (const [dosha, count] of Object.entries(counts)) {
       if (count > max) {
         max = count;
-        primaryDosha = dosha;
+        primaryDoshas = [dosha];
+      } else if (count === max) {
+        primaryDoshas.push(dosha);
       }
     }
     
-    setResult({ primary: primaryDosha, breakdown: counts });
+    const primary = primaryDoshas.join('-');
+    setResult({ primary, breakdown: counts });
   };
 
   const doshaDescriptions = {
-    Vata: 'You are dominated by Air and Space. You are creative, energetic, and adaptable, but prone to anxiety, dry skin, and irregular digestion when out of balance. Focus on warm, grounding foods and routine.',
-    Pitta: 'You are dominated by Fire and Water. You are intelligent, driven, and natural leaders, but prone to inflammation, acidity, and irritability when out of balance. Focus on cooling foods and stress management.',
-    Kapha: 'You are dominated by Earth and Water. You are calm, loving, and possess great stamina, but prone to lethargy, weight gain, and congestion when out of balance. Focus on light, stimulating foods and vigorous exercise.'
+    'Vata': 'You are dominated by Air and Space. You are creative, energetic, and adaptable, but prone to anxiety, dry skin, and irregular digestion when out of balance. Focus on warm, grounding foods and routine.',
+    'Pitta': 'You are dominated by Fire and Water. You are intelligent, driven, and natural leaders, but prone to inflammation, acidity, and irritability when out of balance. Focus on cooling foods and stress management.',
+    'Kapha': 'You are dominated by Earth and Water. You are calm, loving, and possess great stamina, but prone to lethargy, weight gain, and congestion when out of balance. Focus on light, stimulating foods and vigorous exercise.',
+    'Vata-Pitta': 'You have a dual dosha nature of Air, Space, Fire, and Water. You are creative and driven, but must balance between not burning out and staying grounded.',
+    'Pitta-Kapha': 'You have a dual dosha nature of Fire, Water, and Earth. You possess both intensity and endurance. Keep cool and avoid becoming too sedentary.',
+    'Vata-Kapha': 'You have a dual dosha nature of Air, Space, Earth, and Water. You are adaptable yet stable, but need to be careful of irregular digestion and lethargy.',
+    'Vata-Pitta-Kapha': 'You are Tridoshic! Your constitution is relatively balanced among all elements. Maintain harmony through a balanced lifestyle adapted to the seasons.'
   };
 
+  const allAnswered = Object.keys(answers).length === questions.length;
+
   return (
-    <section className="py-20 bg-parchment min-h-[85vh]">
+    <section className="py-20 bg-dawn min-h-[85vh]">
       <div className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-12">
-          <span className="text-terracotta text-xs uppercase tracking-[0.3em] font-medium">Discover Your Nature</span>
-          <h2 className="font-serif text-4xl md:text-5xl mt-3 mb-4 text-botanical">Prakriti (Dosha) Assessment</h2>
-          <p className="text-lg text-charcoal/60 leading-relaxed">Take this simple traditional quiz to discover your unique mind-body constitution and receive personalized lifestyle guidance.</p>
+          <Reveal>
+            <span className="text-saffron text-xs uppercase tracking-[0.3em] font-medium block mb-3">Discover Your Nature</span>
+          </Reveal>
+          <SplitHeading className="font-serif text-4xl md:text-5xl mt-3 mb-4 text-forest">Prakriti Assessment</SplitHeading>
+          <Reveal delay={0.2}>
+            <p className="text-lg text-ink/70 leading-relaxed max-w-2xl mx-auto">Take this simple traditional quiz to discover your unique mind-body constitution and receive personalized lifestyle guidance.</p>
+          </Reveal>
         </div>
 
         {!result ? (
-          <div className="bg-linen rounded-3xl p-8 md:p-12 border border-gold/20 shadow-sm">
-            {questions.map((q, idx) => (
-              <div key={q.id} className="mb-10 last:mb-0">
-                <h4 className="font-serif text-2xl text-botanical mb-4">{idx + 1}. {q.question}</h4>
-                <div className="flex flex-col gap-3">
-                  {q.options.map((opt, i) => (
-                    <label key={i} className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-colors ${answers[q.id] === opt.dosha ? 'bg-botanical/10 border-botanical text-botanical' : 'bg-parchment border-gold/15 hover:border-terracotta/30 text-charcoal/80'}`}>
-                      <input 
-                        type="radio" 
-                        name={q.id} 
-                        value={opt.dosha} 
-                        checked={answers[q.id] === opt.dosha}
-                        onChange={() => handleSelect(q.id, opt.dosha)}
-                        className="w-5 h-5 accent-terracotta"
-                      />
-                      <span className="text-sm font-medium">{opt.label}</span>
-                    </label>
-                  ))}
+          <Reveal delay={0.3}>
+            <div className="glass rounded-3xl p-8 md:p-12 shadow-organic">
+              {questions.map((q, idx) => (
+                <div key={q.id} className="mb-10 last:mb-0">
+                  <h4 className="font-serif text-2xl text-forest mb-4">{idx + 1}. {q.question}</h4>
+                  <div className="flex flex-col gap-3">
+                    {q.options.map((opt, i) => (
+                      <label key={i} className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-colors ${answers[q.id] === opt.dosha ? 'bg-forest/10 border-forest text-forest' : 'bg-dawn/50 border-saffron/20 hover:border-saffron/40 text-ink/80'}`}>
+                        <input 
+                          type="radio" 
+                          name={q.id} 
+                          value={opt.dosha} 
+                          checked={answers[q.id] === opt.dosha}
+                          onChange={() => handleSelect(q.id, opt.dosha)}
+                          className="w-5 h-5 accent-saffron"
+                        />
+                        <span className="text-sm font-medium">{opt.label}</span>
+                      </label>
+                    ))}
+                  </div>
                 </div>
+              ))}
+              
+              <div className="mt-12 text-center">
+                <LeafButton 
+                  onClick={calculateDosha} 
+                  variant="primary"
+                  disabled={!allAnswered}
+                  className={!allAnswered ? 'opacity-50 cursor-not-allowed' : ''}
+                >
+                  Analyze My Prakriti
+                </LeafButton>
+                {!allAnswered && (
+                  <p className="text-saffron text-xs mt-3">Please answer all questions to see your result.</p>
+                )}
               </div>
-            ))}
-            
-            <div className="mt-12 text-center">
-              <LeafButton 
-                onClick={calculateDosha} 
-                variant="primary"
-                className={Object.keys(answers).length < questions.length ? 'opacity-50 cursor-not-allowed' : ''}
-              >
-                Analyze My Prakriti
-              </LeafButton>
-              {Object.keys(answers).length < questions.length && (
-                <p className="text-terracotta text-xs mt-3">Please answer all questions to see your result.</p>
-              )}
             </div>
-          </div>
+          </Reveal>
         ) : (
-          <div className="bg-botanical rounded-3xl p-10 md:p-16 text-center shadow-lg border border-gold/20">
-            <span className="text-gold text-xs uppercase tracking-[0.3em] font-medium">Your Primary Dosha Is</span>
-            <h3 className="font-serif text-6xl text-sand mt-4 mb-8">{result.primary}</h3>
-            <p className="text-sand/80 leading-relaxed text-lg max-w-2xl mx-auto mb-10">
-              {doshaDescriptions[result.primary]}
-            </p>
-            
-            <div className="flex justify-center gap-8 mb-12 border-y border-gold/20 py-6 max-w-lg mx-auto">
-              <div className="text-sand"><span className="block text-2xl font-serif text-gold">{result.breakdown.Vata}</span> Vata</div>
-              <div className="text-sand"><span className="block text-2xl font-serif text-gold">{result.breakdown.Pitta}</span> Pitta</div>
-              <div className="text-sand"><span className="block text-2xl font-serif text-gold">{result.breakdown.Kapha}</span> Kapha</div>
-            </div>
+          <Reveal>
+            <div className="bg-forest rounded-3xl p-10 md:p-16 text-center shadow-lg border border-saffron/20">
+              <span className="text-saffron text-xs uppercase tracking-[0.3em] font-medium">Your Primary Dosha Is</span>
+              <h3 className="font-serif text-5xl md:text-6xl text-dawn mt-4 mb-8">{result.primary}</h3>
+              <p className="text-dawn/80 leading-relaxed text-lg max-w-2xl mx-auto mb-10">
+                {doshaDescriptions[result.primary] || 'A unique blend of doshas shapes your constitution.'}
+              </p>
+              
+              <div className="flex justify-center gap-8 mb-12 border-y border-saffron/20 py-6 max-w-lg mx-auto">
+                <div className="text-dawn"><span className="block text-2xl font-serif text-saffron">{result.breakdown.Vata}</span> Vata</div>
+                <div className="text-dawn"><span className="block text-2xl font-serif text-saffron">{result.breakdown.Pitta}</span> Pitta</div>
+                <div className="text-dawn"><span className="block text-2xl font-serif text-saffron">{result.breakdown.Kapha}</span> Kapha</div>
+              </div>
 
-            <LeafButton onClick={() => {setResult(null); setAnswers({});}} variant="outline" className="border-sand text-sand hover:bg-sand/10">
-              Retake Assessment
-            </LeafButton>
-          </div>
+              <LeafButton onClick={() => {setResult(null); setAnswers({});}} variant="outline" className="border-saffron text-saffron hover:bg-saffron/10">
+                Retake Assessment
+              </LeafButton>
+            </div>
+          </Reveal>
         )}
       </div>
     </section>

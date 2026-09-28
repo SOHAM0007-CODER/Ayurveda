@@ -1,56 +1,55 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
-import HeroSection from './components/HeroSection';
-import PanchakarmaSimulator from './components/PanchakarmaSimulator';
-import DoshaTest from './components/DoshaTest';
-import VideoGallery from './components/VideoGallery';
-import BookingForm from './components/BookingForm';
+import Footer from './components/Footer';
 import VideoModal from './components/VideoModal';
+import SmoothScrollProvider from './motion/SmoothScrollProvider';
 
-export default function App() {
-  const [activeTab, setActiveTab] = useState('home');
+// Pages
+import Home from './pages/Home';
+import Panchakarma from './pages/Panchakarma';
+import DoshaTest from './components/DoshaTest'; // Keep components if no page exists
+import Treatments from './pages/Treatments';
+import About from './pages/About';
+import Gallery from './pages/Gallery';
+import Contact from './pages/Contact';
+
+function AppContent() {
   const [videoUrl, setVideoUrl] = useState(null);
 
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'home':
-        return <HeroSection setActiveTab={setActiveTab} />;
-      case 'simulator':
-        return <PanchakarmaSimulator />;
-      case 'dosha-test':
-        return <DoshaTest />;
-      case 'gallery':
-        return <VideoGallery openVideo={setVideoUrl} />;
-      case 'booking':
-        return <BookingForm />;
-      default:
-        return <HeroSection setActiveTab={setActiveTab} />;
-    }
-  };
-
   return (
-    <div className="min-h-screen font-sans bg-linen text-charcoal">
-      <Header activeTab={activeTab} setActiveTab={setActiveTab} />
-      
-      <main>
-        {renderContent()}
-      </main>
+    <SmoothScrollProvider>
+      <div className="min-h-screen font-sans bg-linen text-charcoal flex flex-col">
+        <Header />
+        
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home openVideo={setVideoUrl} />} />
+            <Route path="/panchakarma" element={<Panchakarma />} />
+            <Route path="/dosha-test" element={<DoshaTest />} />
+            <Route path="/treatments" element={<Treatments />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/gallery" element={<Gallery openVideo={setVideoUrl} />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="*" element={<Home openVideo={setVideoUrl} />} />
+          </Routes>
+        </main>
 
-      {/* Footer */}
-      <footer className="bg-botanical text-sand/80 pt-16 pb-8 border-t-4 border-terracotta">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <h4 className="font-serif text-2xl text-sand mb-4">AyuLife Sanctuary</h4>
-          <p className="text-sm max-w-lg mx-auto text-sand/60 mb-8 leading-relaxed">
-            Preserving the ancient purity of Ayurveda through authentic Panchakarma, Nadi Pariksha, and personalized holistic care.
-          </p>
-          <div className="border-t border-sand/10 pt-6 text-xs text-sand/40 tracking-widest uppercase">
-            &copy; 2026 AyuLife Sanctuary. All rights reserved.
-          </div>
-        </div>
-      </footer>
+        <Footer />
+        <VideoModal title={videoUrl} onClose={() => setVideoUrl(null)} />
+      </div>
+    </SmoothScrollProvider>
+  );
+}
 
-      {/* Global Modals */}
-      <VideoModal title={videoUrl} onClose={() => setVideoUrl(null)} />
-    </div>
+import { HelmetProvider } from 'react-helmet-async';
+
+export default function App() {
+  return (
+    <HelmetProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </HelmetProvider>
   );
 }
