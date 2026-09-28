@@ -26,9 +26,9 @@ export default function LeafCursor() {
 
     const leaf = leafRef.current;
     
-    const xTo = gsap.quickTo(leaf, 'x', { duration: 0.35, ease: 'power3' });
-    const yTo = gsap.quickTo(leaf, 'y', { duration: 0.35, ease: 'power3' });
-    const rotationTo = gsap.quickTo(leaf, 'rotation', { duration: 0.5 });
+    const xTo = gsap.quickTo(leaf, 'x', { duration: 0.15, ease: 'power3.out' });
+    const yTo = gsap.quickTo(leaf, 'y', { duration: 0.15, ease: 'power3.out' });
+    const rotationTo = gsap.quickTo(leaf, 'rotation', { duration: 0.4 });
     const scaleTo = gsap.quickTo(leaf, 'scale', { duration: 0.3 });
 
     let lastX = 0;
@@ -46,9 +46,10 @@ export default function LeafCursor() {
 
     let idleTimeout;
 
-    const onMouseMove = (e) => {
-      xTo(e.clientX);
-      yTo(e.clientY);
+    const onPointerMove = (e) => {
+      // Offset by 12px X and 2px Y to place the tip of the SVG at the cursor
+      xTo(e.clientX - 12);
+      yTo(e.clientY - 2);
       
       const vx = e.clientX - lastX;
       const vy = e.clientY - lastY;
@@ -97,13 +98,13 @@ export default function LeafCursor() {
     const onMouseDown = () => scaleTo(0.85);
     const onMouseUp = () => scaleTo(1.6); // Assume we're still hovering if we clicked
 
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseover', onMouseOver);
-    window.addEventListener('mousedown', onMouseDown);
-    window.addEventListener('mouseup', onMouseUp);
+    window.addEventListener('pointermove', onPointerMove, { passive: true });
+    window.addEventListener('mouseover', onMouseOver, { passive: true });
+    window.addEventListener('mousedown', onMouseDown, { passive: true });
+    window.addEventListener('mouseup', onMouseUp, { passive: true });
 
     return () => {
-      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('mouseover', onMouseOver);
       window.removeEventListener('mousedown', onMouseDown);
       window.removeEventListener('mouseup', onMouseUp);
@@ -117,7 +118,7 @@ export default function LeafCursor() {
     <div 
       ref={leafRef}
       className="pointer-events-none fixed top-0 left-0 z-[9999] mix-blend-normal"
-      style={{ transform: 'translate(-50%, -50%)' }}
+      style={{ willChange: 'transform' }}
     >
       <svg 
         width="24" 
@@ -125,7 +126,7 @@ export default function LeafCursor() {
         viewBox="0 0 24 24" 
         fill="currentColor" 
         xmlns="http://www.w3.org/2000/svg"
-        className="text-forest drop-shadow-sm transition-colors duration-200"
+        className="text-forest transition-colors duration-200"
         style={{ transformOrigin: 'center center' }}
       >
         <path d="M12 22C12 22 4 16 4 10C4 5.58172 7.58172 2 12 2C16.4183 2 20 5.58172 20 10C20 16 12 22 12 22Z" />
