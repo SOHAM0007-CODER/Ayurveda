@@ -1,14 +1,24 @@
 import React, { useMemo, useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
-import { Canvas, useFrame, useLoader } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { useLenis } from '../motion/SmoothScrollProvider';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const TEX = ['/textures/petal-pink.webp', '/textures/petal-cream.webp', '/textures/petal-saffron.webp'];
 
 function PetalLayer({ url, count, mouse }) {
   const mesh = useRef();
-  const map = useLoader(THREE.TextureLoader, url);
+  const [map, setMap] = useState(null);
+  
+  useEffect(() => {
+    new THREE.TextureLoader().load(url, setMap, undefined, (e) => {
+      console.warn(`Texture failed to load: ${url}`);
+    });
+  }, [url]);
+
   const { velocity } = useLenis() || { velocity: { current: 0 } };
   const dummy = useMemo(() => new THREE.Object3D(), []);
   
@@ -56,7 +66,11 @@ function PetalLayer({ url, count, mouse }) {
   return (
     <instancedMesh ref={mesh} args={[null, null, count]} frustumCulled={false}>
       <planeGeometry args={[1, 1]} />
-      <meshBasicMaterial map={map} transparent depthWrite={false} side={THREE.DoubleSide} alphaTest={0.02} />
+      {map ? (
+        <meshBasicMaterial map={map} transparent depthWrite={false} side={THREE.DoubleSide} alphaTest={0.02} />
+      ) : (
+        <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+      )}
     </instancedMesh>
   );
 }
@@ -176,6 +190,7 @@ export default function LivingBackground() {
           alt="" 
           className="absolute inset-0 w-full h-full object-cover object-right-top"
           style={{ transformOrigin: '50% 100%', filter: 'blur(2px)', WebkitMaskImage: 'linear-gradient(to bottom, #000 65%, transparent)' }}
+          onError={(e) => e.target.style.display = 'none'}
         />
         <img 
           ref={trunk} 
@@ -183,6 +198,7 @@ export default function LivingBackground() {
           alt="" 
           className="absolute inset-0 w-full h-full object-cover object-right-top"
           style={{ transformOrigin: '50% 100%' }}
+          onError={(e) => e.target.style.display = 'none'}
         />
         <img 
           ref={branchesFront} 
@@ -190,6 +206,7 @@ export default function LivingBackground() {
           alt="" 
           className="absolute inset-0 w-full h-full object-cover object-right-top"
           style={{ transformOrigin: '50% 0%' }}
+          onError={(e) => e.target.style.display = 'none'}
         />
         <img 
           ref={blossoms} 
@@ -197,6 +214,7 @@ export default function LivingBackground() {
           alt="" 
           className="absolute inset-0 w-full h-full object-cover object-right-top"
           style={{ transformOrigin: '50% 100%' }}
+          onError={(e) => e.target.style.display = 'none'}
         />
       </div>
 

@@ -32,8 +32,8 @@ export default function Home() {
             <LeafButton as={Link} to="/about" variant="outline">Meet Our Team</LeafButton>
           </div>
           <div className="relative">
-            <div className="aspect-[4/5] rounded-[32px] overflow-hidden border border-gold/20 shadow-xl">
-              <img src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80" alt="Ayurvedic Clinic" className="w-full h-full object-cover" />
+            <div className="aspect-[4/5] rounded-[32px] overflow-hidden border border-gold/20 shadow-xl relative group">
+              <video src="/videos/khalva-loop.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
             </div>
             <div className="absolute -bottom-8 -left-8 bg-parchment p-6 rounded-2xl border border-gold/20 shadow-lg hidden md:block max-w-[200px]">
               <p className="font-serif text-3xl text-botanical mb-1">{siteConfig.stats.yearsOfPractice !== 'TODO: Years of practice' ? siteConfig.stats.yearsOfPractice : '15+'}</p>
@@ -105,7 +105,7 @@ export default function Home() {
             description="Cleanse your body of deep-seated toxins and restore your innate doshic balance through our specialized cellular purification therapies."
           />
           
-          <div className="flex flex-wrap justify-center gap-6 mb-12">
+          <div className="flex flex-wrap justify-center gap-8 mb-16">
             {[
               { name: "Vamana", slug: "vamana" },
               { name: "Virechana", slug: "virechana" },
@@ -113,8 +113,13 @@ export default function Home() {
               { name: "Nasya", slug: "nasya" },
               { name: "Raktamokshana", slug: "raktamokshana" },
             ].map(p => (
-              <Link to={`/panchakarma/${p.slug}`} key={p.slug} className="px-6 py-3 border border-sand/30 rounded-full hover:bg-sand/10 transition-colors text-sm uppercase tracking-widest font-medium">
-                {p.name}
+              <Link to={`/panchakarma/${p.slug}`} key={p.slug} className="flex flex-col items-center gap-4 group">
+                <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border border-sand/30 group-hover:border-sand transition-colors relative">
+                  <img src={`/panchakarma/${p.slug}.webp`} alt={p.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onError={(e) => e.target.src=`/panchakarma/${p.slug}.png`} />
+                </div>
+                <span className="text-sm uppercase tracking-widest font-medium group-hover:text-white transition-colors">
+                  {p.name}
+                </span>
               </Link>
             ))}
           </div>
@@ -127,6 +132,15 @@ export default function Home() {
       <section className="py-24 bg-linen">
         <div className="max-w-5xl mx-auto px-6 bg-parchment rounded-[40px] p-12 border border-gold/20 text-center shadow-lg relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-terracotta/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
+          
+          <div className="flex justify-center gap-6 md:gap-12 mb-8">
+            {['vata', 'pitta', 'kapha'].map(dosha => (
+              <div key={dosha} className="relative group">
+                <img src={`/dosha/${dosha}.webp`} alt={dosha} className="w-20 h-20 md:w-28 md:h-28 object-contain group-hover:-translate-y-2 transition-transform duration-500 drop-shadow-xl" onError={(e) => e.target.src=`/dosha/${dosha}.png`} />
+              </div>
+            ))}
+          </div>
+
           <span className="text-terracotta text-xs uppercase tracking-[0.3em] font-medium block mb-3">Know Yourself</span>
           <h2 className="font-serif text-4xl text-botanical mb-4">Discover Your Ayurvedic Prakriti</h2>
           <p className="text-charcoal/70 leading-relaxed mb-8 max-w-xl mx-auto">
