@@ -34,20 +34,28 @@ export function SplitHeading({ children, className = '' }) {
   
   useGSAP(() => {
     const words = comp.current.querySelectorAll('.split-word');
-    gsap.fromTo(words, 
-      { opacity: 0, y: 20 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.05,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: comp.current,
-          start: "top 85%",
+    const animate = () => {
+      gsap.fromTo(words, 
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.05,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: comp.current,
+            start: "top 85%",
+          }
         }
-      }
-    );
+      );
+    };
+
+    if (sessionStorage.getItem('swasthyam_intro_seen') === 'true') {
+      animate();
+    } else {
+      window.addEventListener('intro:done', animate, { once: true });
+    }
   }, { scope: comp });
 
   // Simple text split logic

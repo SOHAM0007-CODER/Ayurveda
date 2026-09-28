@@ -1,119 +1,97 @@
-import React, { useState, useEffect } from 'react';
-import { siteConfig } from '../config/siteConfig';
+import React, { useRef, useState, useEffect } from 'react';
+import gsap from 'gsap';
+import { useLenis } from '../motion/SmoothScrollProvider';
 
 export default function SplashIntro() {
   const [isVisible, setIsVisible] = useState(false);
-  const [isFadingOut, setIsFadingOut] = useState(false);
+  const [showLogo, setShowLogo] = useState(false);
+  const containerRef = useRef(null);
+  const videoRef = useRef(null);
+  const logoRef = useRef(null);
+  const { lenis } = useLenis();
 
   useEffect(() => {
-    // Check session storage
-    const hasSeenSplash = sessionStorage.getItem('swasthyam_splash_seen');
-    
-    // Check reduced motion
+    const hasSeen = sessionStorage.getItem('swasthyam_intro_seen');
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    // Check connection if available
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    const isSlowConnection = connection && (connection.saveData || connection.effectiveType === '2g' || connection.effectiveType === '3g');
 
-    if (!hasSeenSplash && !prefersReducedMotion) {
+    if (!hasSeen && !prefersReducedMotion && !isSlowConnection) {
       setIsVisible(true);
-      
-      // Sequence timing
-      const timer = setTimeout(() => {
-        setIsFadingOut(true);
-        setTimeout(() => {
-          setIsVisible(false);
-          sessionStorage.setItem('swasthyam_splash_seen', 'true');
-        }, 800); // fade out duration matching CSS transition
-      }, 2500); // total duration before fade out starts
-
-      return () => clearTimeout(timer);
+      if (lenis && lenis.current) lenis.current.stop();
+    } else {
+      // Fire intro:done immediately if skipped
+      window.dispatchEvent(new Event('intro:done'));
     }
-  }, []);
+  }, [lenis]);
 
-  const handleSkip = () => {
-    setIsFadingOut(true);
-    setTimeout(() => {
-      setIsVisible(false);
-      sessionStorage.setItem('swasthyam_splash_seen', 'true');
-    }, 800);
+  const endIntro = () => {
+    if (lenis && lenis.current) lenis.current.start();
+    sessionStorage.setItem('swasthyam_intro_seen', 'true');
+    gsap.to(containerRef.current, {
+      opacity: 0,
+      duration: 0.8,
+      ease: 'power2.inOut',
+      onComplete: () => {
+        setIsVisible(false);
+        window.dispatchEvent(new Event('intro:done'));
+      }
+    });
+  };
+
+  const handleTimeUpdate = () => {
+    if (!videoRef.current) return;
+    const timeLeft = videoRef.current.duration - videoRef.current.currentTime;
+    if (timeLeft <= 2 && !showLogo) {
+      setShowLogo(true);
+      gsap.fromTo(logoRef.current, 
+        { opacity: 0, scale: 0.92, filter: 'blur(10px)' },
+        { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 1.5, ease: 'power2.out' }
+      );
+    }
   };
 
   if (!isVisible) return null;
 
   return (
     <div 
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-botanical overflow-hidden transition-all duration-700 ease-in-out ${
-        isFadingOut ? 'opacity-0 -translate-y-full' : 'opacity-100 translate-y-0'
-      }`}
+      ref={containerRef}
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-forest overflow-hidden"
     >
-      
-      {/* Soft gold radial glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--color-gold)_0%,_transparent_70%)] opacity-10 mix-blend-screen pointer-events-none"></div>
+      <video
+        ref={videoRef}
+        muted
+        playsInline
+        autoPlay
+        preload="auto"
+        poster="/intro/poster.webp"
+        className="absolute inset-0 w-full h-full object-cover"
+        onTimeUpdate={handleTimeUpdate}
+        onEnded={endIntro}
+      >
+        <source src="/intro/intro.webm" type="video/webm" />
+        <source src="/intro/intro.mp4" type="video/mp4" />
+      </video>
+
+      <div 
+        ref={logoRef}
+        className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0"
+      >
+        <img 
+          src="/brand/swasthyam-logo.png" 
+          alt="Swasthyam Logo" 
+          className="w-48 md:w-64 h-auto"
+        />
+      </div>
 
       <button 
-        onClick={handleSkip} 
-        className="absolute top-8 right-8 z-20 text-sand/60 hover:text-sand text-xs uppercase tracking-widest px-4 py-2 border border-sand/20 rounded-full transition-colors"
+        onClick={endIntro}
+        className="absolute bottom-8 right-8 z-20 text-white/60 hover:text-white text-xs uppercase tracking-widest px-4 py-2 border border-white/20 rounded-full transition-colors"
       >
         Skip
       </button>
-
-      <div className="relative z-10 flex flex-col items-center justify-center text-center">
-        {/* SVG Drawing Animation */}
-        <div className="mb-8 relative w-16 h-16">
-          <svg viewBox="0 0 100 100" className="w-full h-full stroke-gold fill-transparent">
-             <path 
-                d="M50 15 C 30 15, 20 30, 20 40 C 20 55, 75 45, 75 60 C 75 75, 55 85, 45 85 C 30 85, 20 75, 20 75"
-                strokeWidth="4" 
-                strokeLinecap="round"
-                className="animate-[dash_1.2s_ease-in-out_forwards]"
-                strokeDasharray="200"
-                strokeDashoffset="200"
-             />
-             <style>
-               {`
-                 @keyframes dash {
-                   to { stroke-dashoffset: 0; }
-                 }
-                 @keyframes revealLetter {
-                   0% { opacity: 0; transform: translateY(10px); color: var(--color-gold); }
-                   100% { opacity: 1; transform: translateY(0); color: var(--color-sand); }
-                 }
-                 @keyframes fadeIn {
-                   0% { opacity: 0; transform: translateY(5px); }
-                   100% { opacity: 1; transform: translateY(0); }
-                 }
-               `}
-             </style>
-          </svg>
-        </div>
-
-        {/* Letter by letter reveal */}
-        <h1 className="font-serif text-5xl md:text-7xl font-semibold tracking-widest mb-3 flex justify-center">
-          {Array.from("SWASTHYAM").map((letter, i) => (
-            <span 
-              key={i} 
-              className="opacity-0 translate-y-2 text-gold"
-              style={{ 
-                animation: `revealLetter 0.5s ease-out forwards`,
-                animationDelay: `${0.8 + (i * 0.1)}s` 
-              }}
-            >
-              {letter}
-            </span>
-          ))}
-        </h1>
-
-        {/* Subline and Tagline Fade In */}
-        <div 
-          className="opacity-0"
-          style={{ animation: 'fadeIn 0.8s ease-out forwards', animationDelay: '1.8s' }}
-        >
-          <p className="text-xl md:text-2xl font-sans font-medium text-sage tracking-[0.3em] mb-5">
-            स्वास्थ्यम्
-          </p>
-          <p className="text-xs md:text-sm text-sand/80 font-light tracking-[0.15em] uppercase">
-            {siteConfig.tagline}
-          </p>
-        </div>
-      </div>
     </div>
   );
 }
