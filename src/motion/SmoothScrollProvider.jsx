@@ -1,50 +1,48 @@
-import React, { useEffect, useRef } from 'react';
+import React, { createContext, useContext, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useLocation } from 'react-router-dom';
-import { useReducedMotion } from 'framer-motion';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const LenisCtx = createContext({ lenis: null, velocity: { current: 0 } });
+export const useLenis = () => useContext(LenisCtx);
+
 export default function SmoothScrollProvider({ children }) {
   const lenisRef = useRef(null);
+  const velocity = useRef(0);
   const location = useLocation();
-  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
-    if (shouldReduceMotion) return;
-
-    // Initialize Lenis
-    const lenis = new Lenis({
-      lerp: 0.08,
-      smoothWheel: true,
-      syncTouch: false, // native scroll on phones feels better
-    });
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    
+    const lenis = new Lenis({ lerp: 0.08, smoothWheel: true, syncTouch: false });
     lenisRef.current = lenis;
-
-    // Connect to GSAP ScrollTrigger
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
+    
+    lenis.on('scroll', (e) => { 
+      velocity.current = e.velocity; 
+      ScrollTrigger.update(); 
     });
+    
+    const raf = (t) => lenis.raf(t * 1000);
+    gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
-
-    return () => {
-      lenis.destroy();
-      gsap.ticker.remove(lenis.raf);
+    
+    return () => { 
+      gsap.ticker.remove(raf); 
+      lenis.destroy(); 
     };
-  }, [shouldReduceMotion]);
+  }, []);
 
-  // Reset scroll position on route change
   useEffect(() => {
-    if (lenisRef.current) {
-      lenisRef.current.scrollTo(0, { immediate: true });
-      ScrollTrigger.refresh();
-    } else {
-      window.scrollTo(0, 0);
-    }
+    lenisRef.current?.scrollTo(0, { immediate: true });
+    requestAnimationFrame(() => ScrollTrigger.refresh());
   }, [location.pathname]);
 
-  return <>{children}</>;
+  return (
+    <LenisCtx.Provider value={{ lenis: lenisRef, velocity }}>
+      {children}
+    </LenisCtx.Provider>
+  );
 }

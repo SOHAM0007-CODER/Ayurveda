@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import VideoModal from './components/VideoModal';
 import SmoothScrollProvider from './motion/SmoothScrollProvider';
+import LivingBackground from './scene/LivingBackground';
 
 // Pages
 import Home from './pages/Home';
 import Panchakarma from './pages/Panchakarma';
-import DoshaTest from './components/DoshaTest'; // Keep components if no page exists
+import DoshaTest from './components/DoshaTest';
 import Treatments from './pages/Treatments';
 import About from './pages/About';
 import Gallery from './pages/Gallery';
@@ -19,7 +20,8 @@ function AppContent() {
 
   return (
     <SmoothScrollProvider>
-      <div className="min-h-screen font-sans bg-linen text-charcoal flex flex-col">
+      <LivingBackground />
+      <div className="min-h-screen font-sans bg-transparent text-ink flex flex-col relative z-10">
         <Header />
         
         <main className="flex-grow">

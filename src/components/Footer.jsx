@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="bg-forest text-dawn/80 pt-16 pb-8 border-t-4 border-saffron">
       <div className="max-w-7xl mx-auto px-6 text-center">
         <h4 className="font-serif text-3xl text-dawn mb-4 flex justify-center items-center gap-3">
-          <img src="/brand/swasthyam-logo.png" alt="Swasthyam" className="w-8 h-8 object-contain bg-dawn rounded-full p-1" />
+          <img src="/brand/swasthyam-logo.png" alt="Swasthyam" className="h-10 object-contain" />
           Swasthyam Ayurved
         </h4>
         <p className="text-sm max-w-lg mx-auto text-dawn/60 mb-8 leading-relaxed">
