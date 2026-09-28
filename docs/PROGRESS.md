@@ -6,13 +6,14 @@
 *   **Step 3:** Rebuilt Phase 1 Design System. Applied new color tokens, Devanagari font, glassmorphism (`.glass`), and the interactive leaf buttons.
 *   **Step 4:** Implemented Smooth Scroll & Animations. Added `lenis`, `@gsap/react`, `gsap`, built `SmoothScrollProvider` and `MotionKit` (`Reveal`, `SplitHeading`), and wrapped all pages.
 *   **Step 5:** Built the Living Background. Created `LivingBackground.jsx` with a scroll-scrubbed sky gradient, mouse-parallax DOM trees (`branches-back.webp`, `trunk.webp`, `branches-front.webp`, `blossoms.webp`), and a fast CPU-instanced React Three Fiber petal field.
+*   **Step 6:** Implemented Intro film. Added `SplashIntro.jsx` to play `intro.mp4`/`intro.webm` fullscreen, fading in logo before crossing over into the main content. Also fixed the Leaf Cursor logic.
+*   **Step 7:** Built Cinematic Scroll Hero. Updated `HeroSection.jsx` to lazily decode and sequentially load hero sequence frames (`001.webp` -> `150.webp`) onto a `<canvas>`, with scroll scrubbing pinned to the frame sequence. Formatted the hero headline and buttons into a glassmorphic card on the left.
 
 ## Known Bugs
-*   The leaf cursor is not showing on desktop.
+*   None currently active. (Leaf cursor performance and visibility issues resolved).
 
 ## Missing Media
 *   About page video (`khalva-loop.mp4`) and any remaining missing PNGs.
 
 ## Next Steps
-*   Fix the leaf cursor bug.
-*   **Step 6:** Intro film implementation.
+*   **Step 8:** Section updates (Panchakarma scroll sections, Dosha Test animations, etc.)
