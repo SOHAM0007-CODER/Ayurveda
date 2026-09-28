@@ -1,92 +1,114 @@
-# AyuLife Sanctuary
+<div align="center">
+  <img src="public/brand/swasthyam-logo.png" alt="Swasthyam Ayurved Logo" width="150"/>
 
-AyuLife Sanctuary is an interactive, holistic web platform dedicated to preserving the ancient purity of Ayurveda. Built with modern web technologies, it offers users an immersive journey into Ayurvedic therapies, self-discovery through Dosha testing, and personalized holistic care.
+  # 🌿 Swasthyam Ayurved
 
-## 🌟 Key Features
+  **An immersive, cinematic web experience for an authentic Ayurvedic wellness clinic.**
 
-1. **Interactive Panchakarma Simulator**
-   An engaging visualizer that explains the 5-folds of Panchakarma (Vamana, Virechana, Basti, Nasya, Raktamokshana). Users can explore the mechanisms, target organs, and clinical benefits of each therapy.
+  [![React](https://img.shields.io/badge/React-18.x-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
+  [![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+  [![Tailwind v4](https://img.shields.io/badge/Tailwind_CSS-4.x-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+  [![GSAP](https://img.shields.io/badge/GSAP-3.x-88CE02?style=for-the-badge&logo=greensock&logoColor=white)](https://greensock.com/)
+  [![Three.js](https://img.shields.io/badge/Three.js-R3F-000000?style=for-the-badge&logo=threedotjs&logoColor=white)](https://docs.pmnd.rs/react-three-fiber/)
 
-2. **3D Interactive Herb/Instrument Model**
-   Utilizing React Three Fiber and 3D modeling (`morter-draco.glb`), the platform features an interactive 3D model of a Khalva Yantra (traditional Ayurvedic mortar and pestle) that responds to mouse movements, offering an immersive visual experience.
+</div>
 
-3. **Dosha Assessment Test**
-   A personalized quiz allowing users to discover their primary Ayurvedic Dosha (Vata, Pitta, or Kapha) based on their physical and mental traits.
+---
 
-4. **Curated Video Gallery**
-   An educational section providing a visual representation of Ayurvedic practices and lifestyle guidance through high-quality video content.
+## 📖 Overview
 
-5. **Consultation Booking System**
-   A streamlined booking form allowing users to schedule personalized Nadi Pariksha (Pulse Diagnosis) or holistic Panchakarma therapies directly.
+**Swasthyam Ayurved** is more than just a clinic website—it's a digital sanctuary. Designed to reflect the deep, healing roots of ancient wisdom, the platform combines modern, high-performance web technologies with an organic, nature-inspired aesthetic. 
 
-## 🛠️ Technology Stack
+From parallax tree canopies that sway as you scroll, to 3D falling petals and glassmorphic UI elements, the site offers a serene and engaging user journey through Ayurvedic treatments, Panchakarma therapies, and lifestyle wellness.
 
-- **Framework**: React 19, powered by Vite for lightning-fast HMR and optimized builds.
-- **Styling**: Tailwind CSS v4, delivering a responsive, utility-first styling approach with custom Ayurvedic-inspired themes (Linen, Charcoal, Botanical, Terracotta, Sand).
-- **3D Rendering**: `@react-three/fiber` and `@react-three/drei` along with `three.js` to render the immersive 3D Khalva Yantra model.
-- **Icons**: `lucide-react` for beautiful and consistent iconography.
+---
 
-## 📂 Project Structure
+## ✨ Key Features
 
-```text
-ayurveda/
-├── public/                 # Static assets and 3D models (e.g., morter-draco.glb)
-├── src/
-│   ├── assets/             # Images and local SVGs
-│   ├── components/         # React components
-│   │   ├── BookingForm.jsx
-│   │   ├── DoshaTest.jsx
-│   │   ├── Header.jsx
-│   │   ├── HeroSection.jsx
-│   │   ├── InteractiveHerbModel.jsx
-│   │   ├── LeafButton.jsx
-│   │   ├── PanchakarmaSimulator.jsx
-│   │   ├── VideoGallery.jsx
-│   │   └── VideoModal.jsx
-│   ├── App.jsx             # Main application layout and state
-│   ├── index.css           # Global CSS and Tailwind directives
-│   └── main.jsx            # Application entry point
-├── package.json            # Dependencies and scripts
-├── tailwind.config.js      # Tailwind theme customizations
-└── vite.config.js          # Vite configuration
-```
+- 🍃 **Living Background:** A multi-layered, interactive parallax tree canopy built with GSAP. The branches subtly tilt and sway based on your scroll velocity (wind effect).
+- 🌸 **3D Environment:** High-performance React Three Fiber (R3F) canvas rendering soft, falling petals across the screen.
+- 🎬 **Cinematic Scroll Sequences:** Canvas-based image sequence rendering powered by GSAP ScrollTrigger for Apple-style scroll animations.
+- 🪟 **Frosted Glass UI:** Lightweight, frosted glass cards (Glassmorphism) tailored for readability, depth, and seamless blending with the living background.
+- 🧘 **Interactive Dosha Quiz:** A dynamic assessment tool helping users identify their Prakriti (Vata, Pitta, Kapha).
+- 🌊 **Liquid Smooth Scrolling:** Integrated Lenis scroll for a buttery-smooth navigation experience across all devices.
+
+---
+
+## 🛠️ Tech Stack
+
+| Category | Technology | Purpose |
+|----------|------------|---------|
+| **Core** | React + Vite | Fast compilation, modern component architecture |
+| **Styling** | Tailwind CSS v4 | Utility-first styling, CSS variables, native nesting |
+| **Animation**| GSAP | ScrollTrigger, Staggers, Parallax depth, velocity tracking |
+| **3D** | React Three Fiber | WebGL petal particle systems |
+| **Motion** | Framer Motion | Page transitions, mobile menu orchestration |
+| **Scroll** | Lenis | Custom smooth scroll interpolation |
+| **Routing** | React Router DOM | Multi-page routing (Treatments, Wellness, About, etc.) |
+
+---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
+Make sure you have [Node.js](https://nodejs.org/) (v18+) installed.
 
 ### Installation
 
-1. Clone the repository:
+1. **Clone the repository:**
    ```bash
    git clone https://github.com/SOHAM0007-CODER/Ayurveda.git
-   ```
-2. Navigate into the project directory:
-   ```bash
    cd Ayurveda
    ```
-3. Install the dependencies:
+
+2. **Install dependencies:**
    ```bash
    npm install
    ```
 
-### Running the Application
+3. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
 
-To start the development server, run:
-```bash
-npm run dev
+4. **Build for production:**
+   ```bash
+   npm run build
+   ```
+
+---
+
+## 📂 Project Structure
+
+```text
+src/
+├── components/       # Reusable UI elements (Header, Footer, Buttons)
+├── motion/           # Animation wrappers (SmoothScroll, MotionKit)
+├── pages/            # Route components (Home, Panchakarma, Wellness)
+├── scene/            # 3D and Parallax background components
+├── App.jsx           # Main router & layout shell
+└── index.css         # Tailwind directives & global styling
+public/
+├── brand/            # Logos and SVG native cursors
+├── tree/             # Parallax tree canopy layers
+├── textures/         # Petal textures and noise maps
+└── hero-seq/         # Cinematic scroll image frames
 ```
-Open [http://localhost:5173](http://localhost:5173) in your browser to view the application.
 
-### Building for Production
+---
 
-To create a production-ready build, run:
-```bash
-npm run build
-```
-The optimized files will be generated in the `dist` folder. You can preview the production build locally using `npm run preview`.
+## 🎨 Color Palette & Design System
 
-## 🎨 Design Philosophy
+The site utilizes a strict, nature-inspired palette built directly into Tailwind via CSS variables:
+- `forest`: Deep, grounding green.
+- `botanical`: Vibrant leaf green.
+- `sage`: Soft, muted herbal green.
+- `terracotta`: Earthy, warm clay red.
+- `saffron`: Golden-orange accent for active states.
+- `sand` & `dawn`: Soft, warm off-whites for readable backgrounds and text.
 
-The application's design is heavily inspired by nature and ancient texts, utilizing a calm and earthy color palette (botanical greens, terracotta oranges, sand, and parchment hues). The user interface is crafted to evoke a sense of healing, mindfulness, and authenticity.
+---
+
+<div align="center">
+  <p>Built with ❤️ for Ayurveda and Holistic Healing.</p>
+</div>
