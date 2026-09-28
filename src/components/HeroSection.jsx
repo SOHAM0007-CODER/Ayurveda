@@ -15,7 +15,7 @@ export default function HeroSection() {
   const [reducedMotion, setReducedMotion] = useState(false);
   const frames = useRef([]);
   const state = useRef({ frame: 0 });
-  const maxFrames = 150; // Expected number of frames based on PROGRESS.md
+  const maxFrames = 150;
 
   useEffect(() => {
     const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -35,10 +35,9 @@ export default function HeroSection() {
       img.src = `${path}/${num}.webp`;
       
       img.onload = () => {
-        // Decode for performance
         img.decode().then(() => {
           frames.current.push(img);
-          if (i === 1) renderFrame(0); // Draw first frame immediately
+          if (i === 1) renderFrame(0);
           i++;
           if ('requestIdleCallback' in window) {
             requestIdleCallback(loadNext);
@@ -46,15 +45,14 @@ export default function HeroSection() {
             setTimeout(loadNext, 10);
           }
         }).catch(() => {
-          // If decode fails, just continue
           frames.current.push(img);
+          if (i === 1) renderFrame(0);
           i++;
           setTimeout(loadNext, 10);
         });
       };
       
       img.onerror = () => {
-        // If file missing, stop loading
         stopLoading = true;
       };
     };
@@ -62,8 +60,10 @@ export default function HeroSection() {
     loadNext();
 
     const handleResize = () => {
-      const idx = Math.min(Math.round(state.current.frame), frames.current.length - 1);
-      if (idx >= 0) renderFrame(idx);
+      if (frames.current.length > 0) {
+        const idx = Math.min(Math.round(state.current.frame), frames.current.length - 1);
+        if (idx >= 0) renderFrame(idx);
+      }
     };
 
     window.addEventListener('resize', handleResize);
@@ -79,10 +79,12 @@ export default function HeroSection() {
     if (!canvas) return;
     const ctx = canvas.getContext('2d', { alpha: true });
     const img = frames.current[idx];
-    if (!img) return;
+    if (!img || img.width === 0 || img.height === 0) return;
 
     const rect = canvas.parentElement.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio, 2);
+    if (rect.width === 0 || rect.height === 0) return;
+    
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
     
     if (canvas.width !== rect.width * dpr || canvas.height !== rect.height * dpr) {
       canvas.width = rect.width * dpr;
@@ -97,7 +99,11 @@ export default function HeroSection() {
 
     const s = Math.max(w / img.width, h / img.height);
     const dw = img.width * s, dh = img.height * s;
-    ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
+    try {
+      ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
+    } catch (e) {
+      // Ignore draw errors for broken images
+    }
   };
 
   useGSAP(() => {
@@ -125,33 +131,23 @@ export default function HeroSection() {
 
   return (
     <section ref={sectionRef} className="relative min-h-[90vh] flex items-center pt-20 overflow-hidden bg-transparent">
-      {/* Hero Background Image or Canvas sequence */}
       <div className="absolute inset-0 z-0 flex justify-end">
         <div className="w-full lg:w-3/5 h-full relative">
-          {reducedMotion ? (
-            <img 
-              src="/images/hero-still.webp" 
-              alt="Swasthyam Ayurved" 
-              className="w-full h-full object-cover object-center opacity-90"
-              fetchPriority="high"
-            />
-          ) : (
-            <>
-              <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-90" />
-              {/* Preload first frame to ensure it loads fast if JS is delayed */}
-              <link rel="preload" as="image" href="/hero-seq/desktop/001.webp" media="(min-width: 768px)" />
-              <link rel="preload" as="image" href="/hero-seq/mobile/001.webp" media="(max-width: 767px)" />
-            </>
+          <img 
+            src="/images/hero-still.webp" 
+            alt="Swasthyam Ayurved" 
+            className="absolute inset-0 w-full h-full object-cover object-center opacity-90"
+            fetchPriority="high"
+          />
+          {!reducedMotion && (
+            <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
           )}
-          {/* Gradient to fade into the cream (dawn) on the left side */}
           <div className="absolute inset-0 bg-gradient-to-r from-dawn via-dawn/80 to-transparent"></div>
-          {/* Bottom fade so it blends with sections below */}
           <div className="absolute inset-0 bg-gradient-to-t from-dawn via-transparent to-transparent"></div>
         </div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 w-full grid lg:grid-cols-2 gap-12 items-center">
-        {/* Glass Card Container */}
         <div className="max-w-2xl pt-10 glass p-8 md:p-12">
           <Reveal>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-forest/5 text-forest text-xs font-medium tracking-wide mb-6 border border-forest/10 shadow-sm backdrop-blur-md">
