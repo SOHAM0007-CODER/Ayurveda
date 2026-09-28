@@ -11,8 +11,11 @@ import SplashIntro from './components/SplashIntro';
 // Pages
 import Home from './pages/Home';
 import Panchakarma from './pages/Panchakarma';
+import PanchakarmaDetail from './pages/PanchakarmaDetail';
+import Wellness from './pages/Wellness';
 import DoshaTest from './components/DoshaTest';
 import Treatments from './pages/Treatments';
+import TreatmentDetail from './pages/TreatmentDetail';
 import About from './pages/About';
 import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
@@ -32,8 +35,11 @@ function AppContent() {
           <Routes>
             <Route path="/" element={<Home openVideo={setVideoUrl} />} />
             <Route path="/panchakarma" element={<Panchakarma />} />
-            <Route path="/dosha-test" element={<DoshaTest />} />
+            <Route path="/panchakarma/:slug" element={<PanchakarmaDetail />} />
+            <Route path="/wellness" element={<Wellness />} />
+            <Route path="/wellness/dosha-test" element={<DoshaTest />} />
             <Route path="/treatments" element={<Treatments />} />
+            <Route path="/treatments/:slug" element={<TreatmentDetail />} />
             <Route path="/about" element={<About />} />
             <Route path="/gallery" element={<Gallery openVideo={setVideoUrl} />} />
             <Route path="/contact" element={<Contact />} />

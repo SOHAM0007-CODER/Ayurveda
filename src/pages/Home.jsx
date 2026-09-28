@@ -18,7 +18,7 @@ export default function Home() {
       <HeroSection />
 
       {/* Welcome Section */}
-      <section className="py-24">
+      <section className="pt-24 pb-12">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 items-center glass p-8 md:p-12 rounded-[40px] border border-gold/20">
           <div>
             <span className="text-terracotta text-xs uppercase tracking-[0.3em] font-medium block mb-3">Welcome to Swasthyam</span>
@@ -44,7 +44,7 @@ export default function Home() {
       </section>
 
       {/* Our Treatments */}
-      <section className="py-24 border-y border-gold/10">
+      <section className="pt-12 pb-24 border-y border-gold/10">
         <div className="max-w-7xl mx-auto px-6">
           <SectionHeading 
             subtitle="Holistic Care" 

@@ -163,7 +163,7 @@ export default function LivingBackground() {
       // They move at different speeds for depth
       treeTl.to(wind1.current, { y: 200, opacity: 0.15, ease: 'none' }, 0)
             .to(wind2.current, { y: 150, opacity: 0.25, ease: 'none' }, 0)
-            .to(wind3.current, { y: 100, opacity: 0.35, ease: 'none' }, 0)
+            .to(wind3.current, { y: -100, opacity: 0.35, ease: 'none' }, 0)
             .to(wind4.current, { y: 50, opacity: 0.4, ease: 'none' }, 0);
       
       // Tree swaying
@@ -225,44 +225,61 @@ export default function LivingBackground() {
       ref={skyRef}
     >
       {/* DOM Tree Layers */}
-      <div className="absolute bottom-0 right-0 w-[120%] md:w-[80%] lg:w-[60%] h-[60vh] md:h-[80vh] opacity-80 mix-blend-multiply pointer-events-none origin-bottom">
-        <div ref={wind1} className="absolute inset-0 origin-bottom">
+      <div className="fixed inset-0 pointer-events-none overflow-visible">
+        <div ref={wind1} className="absolute bottom-0 right-0 w-[120%] md:w-[80%] lg:w-[60%] h-[60vh] md:h-[80vh] origin-bottom opacity-80 mix-blend-multiply">
           <img 
             ref={branchesBack} 
             src="/tree/branches-back.webp" 
             alt="" 
             className="absolute inset-0 w-full h-full object-contain object-right-bottom"
-            style={{ transformOrigin: '50% 100%', filter: 'blur(2px)', WebkitMaskImage: 'linear-gradient(to bottom, #000 65%, transparent)' }}
+            style={{ 
+              transformOrigin: '50% 100%', 
+              filter: 'blur(2px)', 
+              WebkitMaskImage: 'radial-gradient(ellipse at 80% 80%, #000 55%, transparent 85%)',
+              maskImage: 'radial-gradient(ellipse at 80% 80%, #000 55%, transparent 85%)'
+            }}
             onError={(e) => e.target.style.display = 'none'}
           />
         </div>
-        <div ref={wind2} className="absolute inset-0 origin-bottom">
+        <div ref={wind2} className="absolute bottom-0 right-0 w-[120%] md:w-[80%] lg:w-[60%] h-[60vh] md:h-[80vh] origin-bottom opacity-80 mix-blend-multiply">
           <img 
             ref={trunk} 
             src="/tree/trunk.webp" 
             alt="" 
             className="absolute inset-0 w-full h-full object-contain object-right-bottom"
-            style={{ transformOrigin: '50% 100%' }}
+            style={{ 
+              transformOrigin: '50% 100%',
+              WebkitMaskImage: 'radial-gradient(ellipse at 80% 80%, #000 55%, transparent 95%)',
+              maskImage: 'radial-gradient(ellipse at 80% 80%, #000 55%, transparent 95%)'
+            }}
             onError={(e) => e.target.style.display = 'none'}
           />
         </div>
-        <div ref={wind3} className="absolute inset-0 origin-bottom">
+        <div ref={wind3} className="absolute top-0 right-0 w-[100%] md:w-[60%] lg:w-[45%] h-[50vh] md:h-[70vh] origin-top opacity-80 mix-blend-multiply">
           <img 
             ref={branchesFront} 
             src="/tree/branches-front.webp" 
             alt="" 
-            className="absolute inset-0 w-full h-full object-contain object-right-bottom"
-            style={{ transformOrigin: '50% 0%' }}
+            className="absolute inset-0 w-full h-full object-contain object-right-top"
+            style={{ 
+              transformOrigin: '50% 0%',
+              WebkitMaskImage: 'radial-gradient(ellipse at 80% 20%, #000 40%, transparent 85%)',
+              maskImage: 'radial-gradient(ellipse at 80% 20%, #000 40%, transparent 85%)'
+            }}
             onError={(e) => e.target.style.display = 'none'}
           />
         </div>
-        <div ref={wind4} className="absolute inset-0 origin-bottom">
+        <div ref={wind4} className="absolute bottom-0 right-0 w-[120%] md:w-[80%] lg:w-[60%] h-[60vh] md:h-[80vh] origin-bottom opacity-80 mix-blend-multiply">
           <img 
             ref={blossoms} 
             src="/tree/blossoms.webp" 
             alt="" 
             className="absolute inset-0 w-full h-full object-contain object-right-bottom"
-            style={{ transformOrigin: '50% 100%' }}
+            style={{ 
+              transformOrigin: '50% 100%',
+              WebkitMaskImage: 'radial-gradient(ellipse at 80% 80%, #000 55%, transparent 90%)',
+              maskImage: 'radial-gradient(ellipse at 80% 80%, #000 55%, transparent 90%)'
+            }}
             onError={(e) => e.target.style.display = 'none'}
           />
         </div>
