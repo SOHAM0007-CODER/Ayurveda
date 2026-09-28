@@ -79,7 +79,7 @@ export default function Home() {
                   visible: { opacity: 1, y: 0, transition: { duration: shouldReduceMotion ? 0 : 0.5, ease: "easeOut" } }
                 }}
               >
-                <Link to={`/treatments/${condition.slug}`} className="group block h-full glass p-8 rounded-2xl border border-gold/15 hover:border-terracotta/40 hover:shadow-md transition-all text-center">
+                <Link to={`/treatments/${condition.slug}`} className="group block h-full bg-white/40 backdrop-blur-md p-8 rounded-2xl border border-gold/15 hover:border-terracotta/40 hover:shadow-md transition-all text-center">
                   <div className="w-12 h-12 mx-auto rounded-full bg-botanical/10 text-botanical group-hover:bg-terracotta group-hover:text-white flex items-center justify-center transition-colors mb-4">
                     {React.cloneElement(condition.icon, { className: 'w-5 h-5' })}
                   </div>
@@ -116,7 +116,7 @@ export default function Home() {
             ].map(p => (
               <Link to={`/panchakarma/${p.slug}`} key={p.slug} className="flex flex-col items-center gap-4 group">
                 <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border border-sand/30 group-hover:border-sand transition-colors relative">
-                  <img src={`/panchakarma/${p.slug}.webp`} alt={p.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onError={(e) => e.target.src=`/panchakarma/${p.slug}.png`} />
+                  <img loading="lazy" src={`/panchakarma/${p.slug}.webp`} alt={p.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onError={(e) => e.target.src=`/panchakarma/${p.slug}.png`} />
                 </div>
                 <span className="text-sm uppercase tracking-widest font-medium group-hover:text-white transition-colors">
                   {p.name}
@@ -137,7 +137,7 @@ export default function Home() {
           <div className="flex justify-center gap-6 md:gap-12 mb-8">
             {['vata', 'pitta', 'kapha'].map(dosha => (
               <div key={dosha} className="relative group">
-                <img src={`/dosha/${dosha}.webp`} alt={dosha} className="w-20 h-20 md:w-28 md:h-28 object-contain group-hover:-translate-y-2 transition-transform duration-500 drop-shadow-xl" onError={(e) => e.target.src=`/dosha/${dosha}.png`} />
+                <img loading="lazy" src={`/dosha/${dosha}.webp`} alt={dosha} className="w-20 h-20 md:w-28 md:h-28 object-contain group-hover:-translate-y-2 transition-transform duration-500 drop-shadow-xl" onError={(e) => e.target.src=`/dosha/${dosha}.png`} />
               </div>
             ))}
           </div>

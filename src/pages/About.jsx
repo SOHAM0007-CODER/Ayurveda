@@ -60,7 +60,7 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <div className="relative">
             <div className="aspect-[3/4] rounded-[40px] overflow-hidden border-2 border-gold/30">
-              <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=800&q=80" alt={siteConfig.doctorName} className="w-full h-full object-cover" />
+              <img loading="lazy" src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=800&q=80" alt={siteConfig.doctorName} className="w-full h-full object-cover" />
             </div>
           </div>
           <div>

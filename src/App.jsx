@@ -5,7 +5,6 @@ import Footer from './components/Footer';
 import VideoModal from './components/VideoModal';
 import SmoothScrollProvider from './motion/SmoothScrollProvider';
 import LivingBackground from './scene/LivingBackground';
-import LeafCursor from './components/LeafCursor';
 import SplashIntro from './components/SplashIntro';
 
 // Pages
@@ -27,7 +26,6 @@ function AppContent() {
     <SmoothScrollProvider>
       <SplashIntro />
       <LivingBackground />
-      <LeafCursor />
       <div className="min-h-screen font-sans bg-transparent text-ink flex flex-col relative z-10">
         <Header />
         

@@ -57,7 +57,7 @@ export default function Treatments() {
                 className="group bg-parchment rounded-3xl border border-gold/20 overflow-hidden hover:shadow-lg transition-all hover:border-terracotta/30 flex flex-col"
               >
                 <div className="h-48 overflow-hidden relative">
-                  <img src="https://images.unsplash.com/photo-1512290900676-26c2a4d4b52b?auto=format&fit=crop&w=600&q=80" alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <img loading="lazy" src="https://images.unsplash.com/photo-1512290900676-26c2a4d4b52b?auto=format&fit=crop&w=600&q=80" alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                   <div className="absolute top-4 right-4 bg-linen/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] uppercase tracking-widest text-terracotta font-medium">
                     {item.category}
                   </div>

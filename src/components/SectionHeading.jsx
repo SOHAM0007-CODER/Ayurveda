@@ -14,13 +14,13 @@ export default function SectionHeading({ subtitle, title, description, align = '
         </Reveal>
       )}
       
-      <SplitText className={`font-serif text-4xl md:text-5xl mb-4 ${dark ? 'text-current' : 'text-forest'}`}>
+      <SplitText className={`font-serif text-4xl md:text-5xl mb-4 ${dark ? 'text-sand' : 'text-forest'}`}>
         {title}
       </SplitText>
       
       {description && (
         <Reveal delay={0.2}>
-          <p className={`text-lg leading-relaxed max-w-2xl mx-auto ${dark ? 'opacity-80' : 'text-ink/70'}`}>
+          <p className={`text-lg leading-relaxed max-w-2xl mx-auto ${dark ? 'text-sand/80' : 'text-charcoal/70'}`}>
             {description}
           </p>
         </Reveal>

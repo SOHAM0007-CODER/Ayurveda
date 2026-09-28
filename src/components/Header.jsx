@@ -56,7 +56,7 @@ export default function Header() {
           }`}
         >
           <Link to="/" className="flex items-center gap-3 group">
-            <img src="/brand/swasthyam-logo.png" alt="Swasthyam" className="h-12 md:h-14 object-contain" />
+            <img src="/brand/swasthyam-logo.png" alt="Swasthyam" className="h-14 md:h-16 object-contain brightness-110 contrast-110" />
             <div className="flex flex-col">
               <span className="text-xl md:text-2xl font-serif tracking-wide font-semibold block leading-none text-forest">SWASTHYAM</span>
               <span className="text-[10px] md:text-xs tracking-[0.2em] uppercase text-saffron mt-1 font-medium">Ayurved</span>

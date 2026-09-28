@@ -98,7 +98,7 @@ function PetalScene({ visible }) {
 
   return (
     <Canvas 
-      dpr={[1, Math.min(window.devicePixelRatio, 1.25)]} 
+      dpr={[1, Math.min(window.devicePixelRatio, 1.0)]} 
       gl={{ antialias: false, alpha: true, powerPreference: 'high-performance' }} 
       camera={{ position: [0, 0, 8], fov: 45 }} 
       frameloop="always"

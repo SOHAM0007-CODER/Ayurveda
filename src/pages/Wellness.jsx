@@ -79,7 +79,7 @@ export default function Wellness() {
       {/* Ritucharya (Seasonal Routine) */}
       <section id="ritucharya" className="py-24 bg-botanical text-sand scroll-mt-24">
         <div className="max-w-7xl mx-auto px-6">
-          <SectionHeading subtitle="Seasonal Rhythm" title="Ritucharya" description="Ayurveda divides the year into 6 seasons (Ritus). Your diet and lifestyle must change as the environment changes." align="center" />
+          <SectionHeading subtitle="Seasonal Rhythm" title="Ritucharya" description="Ayurveda divides the year into 6 seasons (Ritus). Your diet and lifestyle must change as the environment changes." align="center" dark={true} />
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
             {[
