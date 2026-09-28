@@ -1,7 +1,7 @@
 import React from 'react';
 import { Reveal, SplitHeading as SplitText } from '../motion/MotionKit';
 
-export default function SectionHeading({ subtitle, title, description, align = 'center' }) {
+export default function SectionHeading({ subtitle, title, description, align = 'center', dark = false }) {
   const alignClass = align === 'left' ? 'text-left' : align === 'right' ? 'text-right' : 'text-center mx-auto';
   
   return (
@@ -14,13 +14,13 @@ export default function SectionHeading({ subtitle, title, description, align = '
         </Reveal>
       )}
       
-      <SplitText className="font-serif text-4xl md:text-5xl text-forest mb-4">
+      <SplitText className={`font-serif text-4xl md:text-5xl mb-4 ${dark ? 'text-current' : 'text-forest'}`}>
         {title}
       </SplitText>
       
       {description && (
         <Reveal delay={0.2}>
-          <p className="text-lg text-ink/70 leading-relaxed max-w-2xl mx-auto">
+          <p className={`text-lg leading-relaxed max-w-2xl mx-auto ${dark ? 'opacity-80' : 'text-ink/70'}`}>
             {description}
           </p>
         </Reveal>

@@ -115,7 +115,15 @@ export default function LivingBackground() {
   const [visible, setVisible] = useState(true);
   const [reducedMotion, setReducedMotion] = useState(false);
   
+  const { velocity } = useLenis() || { velocity: { current: 0 } };
+  
   const skyRef = useRef(null);
+  
+  const wind1 = useRef(null);
+  const wind2 = useRef(null);
+  const wind3 = useRef(null);
+  const wind4 = useRef(null);
+  
   const branchesBack = useRef(null);
   const trunk = useRef(null);
   const branchesFront = useRef(null);
@@ -131,7 +139,7 @@ export default function LivingBackground() {
     if (!isReduced) {
       // Sky gradient scrub
       gsap.to(skyRef.current, {
-        '--sky-top': '#E9A6A6', // dusk-ish
+        '--sky-top': '#E9A6A6',
         '--sky-bottom': '#C9A45C',
         ease: 'none',
         scrollTrigger: {
@@ -142,6 +150,22 @@ export default function LivingBackground() {
         }
       });
       
+      // Tree fading and parallax on scroll down
+      const treeTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: document.body,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 1
+        }
+      });
+      
+      // They move at different speeds for depth
+      treeTl.to(wind1.current, { y: 200, opacity: 0.15, ease: 'none' }, 0)
+            .to(wind2.current, { y: 150, opacity: 0.25, ease: 'none' }, 0)
+            .to(wind3.current, { y: 100, opacity: 0.35, ease: 'none' }, 0)
+            .to(wind4.current, { y: 50, opacity: 0.4, ease: 'none' }, 0);
+      
       // Tree swaying
       const sway = (el, angle, dur) => {
         gsap.to(el, { rotate: angle, duration: dur, ease: 'sine.inOut', yoyo: true, repeat: -1 });
@@ -151,6 +175,23 @@ export default function LivingBackground() {
       sway(trunk.current, 0.8, 8);
       sway(branchesFront.current, 1.2, 7);
       sway(blossoms.current, 1.5, 6);
+      
+      // Wind tilt based on scroll velocity
+      const updateWind = () => {
+        if (!velocity || velocity.current === undefined) return;
+        const v = velocity.current;
+        // Map scroll velocity to a slight rotation angle (stronger gust = more rotation)
+        const tilt = THREE.MathUtils.clamp(v * -0.015, -12, 12);
+        
+        gsap.to([wind1.current, wind2.current, wind3.current, wind4.current], {
+          rotate: (i) => tilt * (i * 0.3 + 0.5),
+          duration: 0.8,
+          ease: 'power3.out',
+          overwrite: 'auto'
+        });
+      };
+      
+      gsap.ticker.add(updateWind);
       
       // Mouse parallax for tree layers
       const updateParallax = (e) => {
@@ -164,6 +205,7 @@ export default function LivingBackground() {
       
       window.addEventListener('pointermove', updateParallax, { passive: true });
       return () => {
+        gsap.ticker.remove(updateWind);
         document.removeEventListener('visibilitychange', handleVisibility);
         window.removeEventListener('pointermove', updateParallax);
       };
@@ -183,39 +225,47 @@ export default function LivingBackground() {
       ref={skyRef}
     >
       {/* DOM Tree Layers */}
-      <div className="absolute top-0 right-0 w-full lg:w-3/5 h-full opacity-60 mix-blend-multiply">
-        <img 
-          ref={branchesBack} 
-          src="/tree/branches-back.webp" 
-          alt="" 
-          className="absolute inset-0 w-full h-full object-cover object-right-top"
-          style={{ transformOrigin: '50% 100%', filter: 'blur(2px)', WebkitMaskImage: 'linear-gradient(to bottom, #000 65%, transparent)' }}
-          onError={(e) => e.target.style.display = 'none'}
-        />
-        <img 
-          ref={trunk} 
-          src="/tree/trunk.webp" 
-          alt="" 
-          className="absolute inset-0 w-full h-full object-cover object-right-top"
-          style={{ transformOrigin: '50% 100%' }}
-          onError={(e) => e.target.style.display = 'none'}
-        />
-        <img 
-          ref={branchesFront} 
-          src="/tree/branches-front.webp" 
-          alt="" 
-          className="absolute inset-0 w-full h-full object-cover object-right-top"
-          style={{ transformOrigin: '50% 0%' }}
-          onError={(e) => e.target.style.display = 'none'}
-        />
-        <img 
-          ref={blossoms} 
-          src="/tree/blossoms.webp" 
-          alt="" 
-          className="absolute inset-0 w-full h-full object-cover object-right-top"
-          style={{ transformOrigin: '50% 100%' }}
-          onError={(e) => e.target.style.display = 'none'}
-        />
+      <div className="absolute bottom-0 right-0 w-[120%] md:w-[80%] lg:w-[60%] h-[60vh] md:h-[80vh] opacity-80 mix-blend-multiply pointer-events-none origin-bottom">
+        <div ref={wind1} className="absolute inset-0 origin-bottom">
+          <img 
+            ref={branchesBack} 
+            src="/tree/branches-back.webp" 
+            alt="" 
+            className="absolute inset-0 w-full h-full object-contain object-right-bottom"
+            style={{ transformOrigin: '50% 100%', filter: 'blur(2px)', WebkitMaskImage: 'linear-gradient(to bottom, #000 65%, transparent)' }}
+            onError={(e) => e.target.style.display = 'none'}
+          />
+        </div>
+        <div ref={wind2} className="absolute inset-0 origin-bottom">
+          <img 
+            ref={trunk} 
+            src="/tree/trunk.webp" 
+            alt="" 
+            className="absolute inset-0 w-full h-full object-contain object-right-bottom"
+            style={{ transformOrigin: '50% 100%' }}
+            onError={(e) => e.target.style.display = 'none'}
+          />
+        </div>
+        <div ref={wind3} className="absolute inset-0 origin-bottom">
+          <img 
+            ref={branchesFront} 
+            src="/tree/branches-front.webp" 
+            alt="" 
+            className="absolute inset-0 w-full h-full object-contain object-right-bottom"
+            style={{ transformOrigin: '50% 0%' }}
+            onError={(e) => e.target.style.display = 'none'}
+          />
+        </div>
+        <div ref={wind4} className="absolute inset-0 origin-bottom">
+          <img 
+            ref={blossoms} 
+            src="/tree/blossoms.webp" 
+            alt="" 
+            className="absolute inset-0 w-full h-full object-contain object-right-bottom"
+            style={{ transformOrigin: '50% 100%' }}
+            onError={(e) => e.target.style.display = 'none'}
+          />
+        </div>
       </div>
 
       {/* R3F Petal Field */}

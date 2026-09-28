@@ -30,21 +30,27 @@
   --radius-organic: 32px 8px 32px 8px;
   --radius-organic-alt: 8px 32px 8px 32px;
   --radius-organic-soft: 24px 6px 24px 6px;
-
   --shadow-organic: 0 8px 30px rgba(0, 0, 0, 0.03);
 }
 
-body {
-  background-color: var(--color-dawn);
-  color: var(--color-ink);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  font-weight: 300;
-}
+@layer base {
+  body {
+    background-color: var(--color-dawn);
+    color: var(--color-ink);
+    --heading-color: var(--color-forest);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    font-weight: 300;
+  }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif);
-  color: var(--color-forest);
+  .text-sand { --heading-color: var(--color-sand); }
+  .text-dawn { --heading-color: var(--color-dawn); }
+  .text-white { --heading-color: #fff; }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    color: var(--heading-color);
+  }
 }
 
 /* Devanagari text styling */

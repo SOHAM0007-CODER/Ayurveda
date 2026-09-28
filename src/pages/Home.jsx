@@ -18,8 +18,8 @@ export default function Home() {
       <HeroSection />
 
       {/* Welcome Section */}
-      <section className="py-24 bg-linen">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+      <section className="py-24">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 items-center glass p-8 md:p-12 rounded-[40px] border border-gold/20">
           <div>
             <span className="text-terracotta text-xs uppercase tracking-[0.3em] font-medium block mb-3">Welcome to Swasthyam</span>
             <h2 className="font-serif text-4xl md:text-5xl text-botanical mb-6">Healing Rooted in Ancient Wisdom</h2>
@@ -44,7 +44,7 @@ export default function Home() {
       </section>
 
       {/* Our Treatments */}
-      <section className="py-24 bg-parchment border-y border-gold/10">
+      <section className="py-24 border-y border-gold/10">
         <div className="max-w-7xl mx-auto px-6">
           <SectionHeading 
             subtitle="Holistic Care" 
@@ -79,7 +79,7 @@ export default function Home() {
                   visible: { opacity: 1, y: 0, transition: { duration: shouldReduceMotion ? 0 : 0.5, ease: "easeOut" } }
                 }}
               >
-                <Link to={`/treatments/${condition.slug}`} className="group block h-full bg-linen p-8 rounded-2xl border border-gold/15 hover:border-terracotta/40 hover:shadow-md transition-all text-center">
+                <Link to={`/treatments/${condition.slug}`} className="group block h-full glass p-8 rounded-2xl border border-gold/15 hover:border-terracotta/40 hover:shadow-md transition-all text-center">
                   <div className="w-12 h-12 mx-auto rounded-full bg-botanical/10 text-botanical group-hover:bg-terracotta group-hover:text-white flex items-center justify-center transition-colors mb-4">
                     {React.cloneElement(condition.icon, { className: 'w-5 h-5' })}
                   </div>
@@ -103,6 +103,7 @@ export default function Home() {
             subtitle="Deep Detoxification" 
             title="The 5-Folds of Panchakarma" 
             description="Cleanse your body of deep-seated toxins and restore your innate doshic balance through our specialized cellular purification therapies."
+            dark={true}
           />
           
           <div className="flex flex-wrap justify-center gap-8 mb-16">
@@ -129,8 +130,8 @@ export default function Home() {
       </section>
 
       {/* Dosha Teaser */}
-      <section className="py-24 bg-linen">
-        <div className="max-w-5xl mx-auto px-6 bg-parchment rounded-[40px] p-12 border border-gold/20 text-center shadow-lg relative overflow-hidden">
+      <section className="py-24">
+        <div className="max-w-5xl mx-auto px-6 glass rounded-[40px] p-12 border border-gold/20 text-center shadow-lg relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-terracotta/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
           
           <div className="flex justify-center gap-6 md:gap-12 mb-8">
@@ -151,7 +152,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-24 bg-parchment border-t border-gold/10">
+      <section className="py-24 border-t border-gold/10">
         <div className="max-w-7xl mx-auto px-6">
           <SectionHeading subtitle="Patient Stories" title="Words of Healing" />
           <TestimonialSlider testimonials={testimonials} />
@@ -159,8 +160,8 @@ export default function Home() {
       </section>
 
       {/* FAQs */}
-      <section className="py-24 bg-linen">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-24">
+        <div className="max-w-7xl mx-auto px-6 glass rounded-[40px] p-12 border border-gold/20">
           <SectionHeading subtitle="Common Questions" title="Frequently Asked Questions" />
           <FAQAccordion faqs={generalFaqs} />
         </div>
