@@ -13,11 +13,11 @@ export default function LeafCursor() {
     
     if (mediaQuery.matches && !reducedMotion.matches) {
       setIsVisible(true);
-      document.body.classList.add('leaf-cursor');
+      document.documentElement.classList.add('leaf-cursor');
     }
 
     return () => {
-      document.body.classList.remove('leaf-cursor');
+      document.documentElement.classList.remove('leaf-cursor');
     };
   }, []);
 
